@@ -35,6 +35,7 @@ class ModelManager:
             "ResNet18": lambda: models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1),
             "ResNet50": lambda: models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1),
             "MobileNetV2": lambda: models.mobilenet_v2(weights=models.MobileNet_V2_Weights.IMAGENET1K_V1),
+            "EfficientNet-B0": lambda: models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.IMAGENET1K_V1),
         }
         return model_loaders[self.model_name]()
     

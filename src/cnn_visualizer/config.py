@@ -35,6 +35,12 @@ MODEL_CONFIGS: Final[dict[str, ModelConfig]] = {
         gradcam_layer="features.17",
         weights_enum="MobileNet_V2_Weights.IMAGENET1K_V1",
     ),
+    "EfficientNet-B0": ModelConfig(
+        layers=("features.0", "features.2", "features.4", "features.6", "features.8"),
+        max_filters=1280,
+        gradcam_layer="features.8",
+        weights_enum="EfficientNet_B0_Weights.IMAGENET1K_V1",
+    ),
 }
 
 AVAILABLE_MODELS: Final = list(MODEL_CONFIGS.keys())
