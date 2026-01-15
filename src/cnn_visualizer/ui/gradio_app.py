@@ -21,7 +21,6 @@ def create_interface() -> gr.Blocks:
     Returns:
         Configured Gradio Blocks interface.
     """
-    # Initialize components
     model_manager = ModelManager()
     feature_extractor = FeatureMapExtractor(model_manager)
     gradcam_visualizer = GradCAMVisualizer(model_manager)
@@ -47,14 +46,11 @@ def create_interface() -> gr.Blocks:
         if image.mode != 'RGB':
             image = image.convert('RGB')
         
-        # Extract and visualize feature maps
         feature_maps = feature_extractor.extract(image, layer)
         feature_map_img = feature_extractor.visualize(feature_maps, int(num_filters))
         
-        # Generate Grad-CAM
         gradcam_img = gradcam_visualizer.generate(image)
         
-        # Get predictions
         predictions = model_manager.predict(image)
         predictions_text = "\n".join([
             f"{name}: {prob:.2%}" for name, prob in predictions
@@ -62,7 +58,6 @@ def create_interface() -> gr.Blocks:
         
         return feature_map_img, gradcam_img, predictions_text
     
-    # Build interface
     with gr.Blocks(title="CNN Visualizer") as demo:
         gr.Markdown("# CNN Feature Map Visualizer")
         
