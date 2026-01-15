@@ -10,6 +10,7 @@ from ..config import (
     MIN_FILTERS,
     MAX_FILTERS,
     FILTER_STEP,
+    IMAGE_SIZE,
 )
 from ..models import ModelManager
 from ..visualization import FeatureMapExtractor, GradCAMVisualizer
@@ -60,6 +61,7 @@ def create_interface() -> gr.Blocks:
     
     with gr.Blocks(title="CNN Visualizer") as demo:
         gr.Markdown("# CNN Feature Map Visualizer")
+        gr.Markdown(f"*Processed image size: {IMAGE_SIZE[0]}×{IMAGE_SIZE[1]} px*")
         
         with gr.Row():
             input_image = gr.Image(type="pil", label="Input Image")
