@@ -21,6 +21,14 @@ class FeatureMapExtractor:
         """
         self.model_manager = model_manager
     
+    def update_model(self, model_manager: ModelManager) -> None:
+        """Update to use a new model manager.
+        
+        Args:
+            model_manager: New ModelManager instance.
+        """
+        self.model_manager = model_manager
+    
     def extract(self, image: Image.Image, layer_name: str) -> np.ndarray:
         """Extract feature maps from a specific layer.
         

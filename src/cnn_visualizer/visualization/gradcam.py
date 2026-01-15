@@ -19,8 +19,22 @@ class GradCAMVisualizer:
             model_manager: ModelManager instance for model access.
         """
         self.model_manager = model_manager
-        self._target_layers = [model_manager.get_layer("layer4")[-1]]
-        self._cam = GradCAM(model=model_manager.model, target_layers=self._target_layers)
+        self._cam: GradCAM | None = None
+        self._rebuild_cam()
+    
+    def _rebuild_cam(self) -> None:
+        """Rebuild the GradCAM instance for current model."""
+        target_layer = self.model_manager.get_gradcam_layer()
+        self._cam = GradCAM(model=self.model_manager.model, target_layers=[target_layer])
+    
+    def update_model(self, model_manager: ModelManager) -> None:
+        """Update to use a new model manager.
+        
+        Args:
+            model_manager: New ModelManager instance.
+        """
+        self.model_manager = model_manager
+        self._rebuild_cam()
     
     def generate(self, image: Image.Image) -> Image.Image:
         """Generate Grad-CAM overlay for an image.
