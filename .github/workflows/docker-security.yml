@@ -1,0 +1,39 @@
+name: Docker Security Scan
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'pyproject.toml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'pyproject.toml'
+
+jobs:
+  trivy:
+    name: Trivy Container Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t cnn-visualizer:scan .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'cnn-visualizer:scan'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
