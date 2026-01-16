@@ -21,3 +21,11 @@ Thumbs.db
 
 # Project specific
 uv.lock
+
+# MkDocs
+site/
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
