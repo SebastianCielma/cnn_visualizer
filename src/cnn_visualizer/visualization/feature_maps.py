@@ -72,7 +72,7 @@ class FeatureMapExtractor:
         n_maps = min(num_maps, feature_maps.shape[0])
         grid_size = int(np.ceil(np.sqrt(n_maps)))
 
-        fig, axes = plt.subplots(grid_size, grid_size, figsize=(12, 12))
+        fig, axes = plt.subplots(grid_size, grid_size, figsize=(12, 12), squeeze=False)
 
         for idx, ax in enumerate(axes.flat):
             if idx < n_maps:
