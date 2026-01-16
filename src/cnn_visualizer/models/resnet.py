@@ -58,7 +58,10 @@ class ModelManager:
         parts = layer_name.split(".")
         module: nn.Module = self.model
         for part in parts:
-            module = cast(nn.Module, module[int(part)]) if part.isdigit() else getattr(module, part)
+            if part.isdigit():  # noqa: SIM108
+                module = cast(nn.Module, module[int(part)])  # type: ignore[index]
+            else:
+                module = getattr(module, part)
         return module
 
     def get_layer(self, layer_name: str) -> nn.Module:
@@ -81,7 +84,7 @@ class ModelManager:
         """Get the target layer for Grad-CAM visualization."""
         layer = self._get_layer_by_name(self.config.gradcam_layer)
         if hasattr(layer, "__getitem__"):
-            return cast(nn.Module, layer[-1])
+            return cast(nn.Module, layer[-1])  # type: ignore[index]
         return layer
 
     def get_layer_names(self) -> list[str]:
