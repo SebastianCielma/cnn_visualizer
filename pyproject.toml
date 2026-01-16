@@ -27,7 +27,7 @@ dev = [
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short"
+addopts = "-v --tb=short --cov=src/cnn_visualizer --cov-fail-under=75"
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.ruff]
@@ -40,9 +40,8 @@ ignore = ["E501"]
 
 [tool.mypy]
 python_version = "3.13"
+strict = true
 warn_unused_ignores = true
 ignore_missing_imports = true
-disallow_untyped_defs = false
-check_untyped_defs = true
 explicit_package_bases = true
 mypy_path = "src"
