@@ -1,0 +1,36 @@
+services:
+  cnn-visualizer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cnn-visualizer:latest
+    container_name: cnn-visualizer
+    ports:
+      - "7860:7860"
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:7860/')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cnn-visualizer:dev
+    container_name: cnn-visualizer-dev
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./src:/app/src:ro
+      - ./app.py:/app/app.py:ro
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+    profiles:
+      - dev
