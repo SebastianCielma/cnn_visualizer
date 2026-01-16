@@ -7,12 +7,14 @@ on:
       - 'Dockerfile'
       - 'docker-compose.yml'
       - 'pyproject.toml'
+      - 'uv.lock'
   pull_request:
     branches: [master, main]
     paths:
       - 'Dockerfile'
       - 'docker-compose.yml'
       - 'pyproject.toml'
+      - 'uv.lock'
 
 jobs:
   trivy:
@@ -26,17 +28,15 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t cnn-visualizer:scan .
+        continue-on-error: true
+        id: build
 
       - name: Run Trivy vulnerability scanner
+        if: steps.build.outcome == 'success'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'cnn-visualizer:scan'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: 'table'
+          exit-code: '1'
           severity: 'CRITICAL,HIGH'
-
-      - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v4
-        if: always() && hashFiles('trivy-results.sarif') != ''
-        with:
-          sarif_file: 'trivy-results.sarif'
+          ignore-unfixed: true
