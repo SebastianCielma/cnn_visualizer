@@ -109,5 +109,5 @@ def mock_model_manager(mock_module: MockModule) -> MagicMock:
 @pytest.fixture
 def patched_model_manager() -> Generator[MagicMock]:
     """Patch ModelManager to avoid loading real weights."""
-    with patch("src.cnn_visualizer.models.resnet.ModelManager") as mock:
+    with patch("src.cnn_visualizer.models.manager.ModelManager") as mock:
         yield mock
