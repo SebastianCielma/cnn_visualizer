@@ -1,5 +1,7 @@
 """ResNet model management."""
 
+from typing import cast
+
 import torch
 import torch.nn as nn
 from PIL import Image
@@ -41,11 +43,12 @@ class ModelManager:
                 weights=models.EfficientNet_B0_Weights.IMAGENET1K_V1
             ),
         }
-        return model_loaders[self.model_name]()
+        model: nn.Module = model_loaders[self.model_name]()
+        return model
 
     def _build_layer_mapping(self) -> dict[str, nn.Module]:
         """Build mapping from layer names to layer modules."""
-        mapping = {}
+        mapping: dict[str, nn.Module] = {}
         for layer_name in self.config.layers:
             mapping[layer_name] = self._get_layer_by_name(layer_name)
         return mapping
@@ -53,9 +56,9 @@ class ModelManager:
     def _get_layer_by_name(self, layer_name: str) -> nn.Module:
         """Get layer module by dot-notation name (e.g., 'features.0')."""
         parts = layer_name.split(".")
-        module = self.model
+        module: nn.Module = self.model
         for part in parts:
-            module = module[int(part)] if part.isdigit() else getattr(module, part)
+            module = cast(nn.Module, module[int(part)]) if part.isdigit() else getattr(module, part)
         return module
 
     def get_layer(self, layer_name: str) -> nn.Module:
@@ -78,7 +81,7 @@ class ModelManager:
         """Get the target layer for Grad-CAM visualization."""
         layer = self._get_layer_by_name(self.config.gradcam_layer)
         if hasattr(layer, "__getitem__"):
-            return layer[-1]
+            return cast(nn.Module, layer[-1])
         return layer
 
     def get_layer_names(self) -> list[str]:
@@ -118,4 +121,5 @@ class ModelManager:
 
     def forward(self, input_tensor: torch.Tensor) -> torch.Tensor:
         """Run forward pass on tensor input."""
-        return self.model(input_tensor)
+        result: torch.Tensor = self.model(input_tensor)
+        return result

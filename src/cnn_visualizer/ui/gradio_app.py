@@ -146,4 +146,5 @@ def create_interface() -> gr.Blocks:
             fn=on_model_change, inputs=[model_select], outputs=[layer_select, num_filters]
         )
 
-    return demo
+    demo_interface: gr.Blocks = demo
+    return demo_interface

@@ -44,7 +44,7 @@ class LayerAnimator:
         input_tensor = image_transform(image).unsqueeze(0)
         activations: list[torch.Tensor] = []
 
-        def hook_fn(module, input, output):
+        def hook_fn(module: object, input: object, output: torch.Tensor) -> None:
             activations.append(output.detach())
 
         target_layer = self.model_manager.get_layer(layer_name)
