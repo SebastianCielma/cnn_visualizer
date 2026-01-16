@@ -1,0 +1,58 @@
+site_name: CNN Visualizer
+site_description: Interactive tool for visualizing convolutional neural network activations
+site_author: Sebastian Cielma
+repo_url: https://github.com/SebastianCielma/cnn_visualizer
+repo_name: SebastianCielma/cnn_visualizer
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+  - API Reference:
+      - Configuration: api/config.md
+      - Models: api/models.md
+      - Visualization: api/visualization.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+            docstring_style: google
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - toc:
+      permalink: true
