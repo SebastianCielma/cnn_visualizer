@@ -76,7 +76,7 @@ def load_imagenet_labels() -> list[str]:
     try:
         import urllib.request
 
-        with urllib.request.urlopen(IMAGENET_LABELS_URL) as f:
+        with urllib.request.urlopen(IMAGENET_LABELS_URL) as f:  # nosec B310
             return [line.decode("utf-8").strip() for line in f.readlines()]
     except Exception:
         return [f"Class {i}" for i in range(1000)]

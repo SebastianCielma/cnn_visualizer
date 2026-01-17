@@ -133,7 +133,8 @@ class LayerAnimator:
             frame = self._create_frame(feature_maps, layer_name, idx, len(layer_names), num_filters)
             frames.append(frame)
 
-        gif_path = tempfile.mktemp(suffix=".gif")
+        with tempfile.NamedTemporaryFile(suffix=".gif", delete=False) as temp_file:
+            gif_path = temp_file.name
 
         frames[0].save(
             gif_path,
